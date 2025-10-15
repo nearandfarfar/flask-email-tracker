@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: flask-email-tracker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python tracking_app.py
+    plan: free
+    envVars:
+      - key: SUB_DB
+        value: /opt/render/project/src/subscribers.db
