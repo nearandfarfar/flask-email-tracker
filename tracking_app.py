@@ -1,10 +1,15 @@
-
 from flask import Flask, request, redirect, make_response, send_file
 import io, sqlite3, os, time, html, base64
 
-DB_PATH = os.environ.get("SUB_DB", "subscribers.db")
-
 app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Flask Email Tracker is Running ✅<br>Endpoints: /o (open), /c (click)"
+
+
+
+DB_PATH = os.environ.get("SUB_DB", "subscribers.db")
 
 def db():
     return sqlite3.connect(DB_PATH)
@@ -94,4 +99,5 @@ def click():
     return redirect(url, code=302)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
