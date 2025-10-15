@@ -52,6 +52,7 @@ def unsubscribe():
     con.commit()
     con.close()
     log_event(email, "unsub", token, None)
+    print(f"Tracked unsub token={token} email={email}")
     return (\
         "<html><body style=\"font-family: sans-serif;\">" \
         f"<h2>{html.escape(email)}</h2>" \
@@ -72,6 +73,12 @@ def open_pixel():
             email = row[0]
         con.close()
     log_event(email, "open", token, None)
+	
+    print(
+        f"Tracked open token={token} email={email} "
+        f"ip={request.headers.get('X-Forwarded-For', request.remote_addr)} "
+        f"ua={request.headers.get('User-Agent','')}"
+    )
 
     png_bytes = base64.b64decode(
         "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMA"
@@ -96,6 +103,11 @@ def click():
             email = row[0]
         con.close()
     log_event(email, "click", token, url)
+    print(
+        f"Tracked click token={token} email={email} url={url} "
+        f"ip={request.headers.get('X-Forwarded-For', request.remote_addr)} "
+        f"ua={request.headers.get('User-Agent','')}"
+    )
     return redirect(url, code=302)
 
 if __name__ == "__main__":
